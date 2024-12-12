@@ -31,6 +31,80 @@ We use this categorical data encoding technique when the features are nominal(do
 • Yeojohnson method
 
 # CODING AND OUTPUT:
+from google.colab import drive
+drive.mount('/content/drive')
+
+import pandas as pd
+
+from google.colab import files
+uploaded = files.upload()
+df = pd.read_csv('/content/Encoding Data.csv')
+
+df
+
+from sklearn.preprocessing import OrdinalEncoder
+
+temp = ['Hot','Warm','Cold']
+oe = OrdinalEncoder(categories=[temp])
+
+oe.fit_transform(df[['ord_2']])
+
+df['bo2'] = oe.fit_transform(df[['ord_2']])
+df
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+dfc = df.copy()
+dfc['ord_2'] = le.fit_transform(dfc['ord_2'])
+
+dfc
+
+from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
+import numpy as np
+
+ohe = OneHotEncoder(sparse_output=False)
+df2 = df.copy()
+
+enc = pd.DataFrame(ohe.fit_transform(df2[['nom_0']]))
+
+df2 = pd.concat([df,enc],axis=1)
+
+df2
+
+
+pd.get_dummies(df2,columns=["nom_0"])
+
+pip install --upgrade category_encoders
+
+from category_encoders import BinaryEncoder
+
+from google.colab import files
+uploaded = files.upload()
+df = pd.read_csv('/content/data.csv')
+
+df
+
+be = BinaryEncoder()
+
+nd = be.fit_transform(df['Ord_2'])
+
+dfb = pd.concat([df,nd],axis=1)
+
+dfb1 = df.copy()
+
+dfb
+
+from category_encoders import TargetEncoder
+
+te = TargetEncoder()
+
+cc = df.copy()
+
+new = te.fit_transform(X=cc["City"], y=cc["Target"])
+cc = pd.concat([cc,new],axis=1)
+
+
        # INCLUDE YOUR CODING AND OUTPUT SCREENSHOTS HERE
 # RESULT:
        # INCLUDE YOUR RESULT HERE

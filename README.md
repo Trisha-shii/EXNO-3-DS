@@ -104,6 +104,93 @@ cc = df.copy()
 new = te.fit_transform(X=cc["City"], y=cc["Target"])
 cc = pd.concat([cc,new],axis=1)
 
+import pandas as pd
+from scipy import stats
+import numpy as np
+from google.colab import files
+uploaded = files.upload()
+
+# Get the actual filename from the 'uploaded' dictionary
+filename = list(uploaded.keys())[0]
+
+# Read the CSV file using the correct filename
+df = pd.read_csv(filename)
+
+df
+
+df.skew()
+
+np.log(df["Highly Positive Skew"])
+
+np.reciprocal(df["Moderate Positive Skew"])
+
+np.sqrt(df["Highly Positive Skew"])
+
+np.square(df["Highly Positive Skew"])
+
+df["Highly Positive Skew_boxcox"], parameter=stats.boxcox(df["Highly Positive Skew"])
+df
+
+df["Moderate Negative Skew_yeojohnson"], parameters = stats.yeojohnson(df["Moderate Negative Skew"])
+df.skew()
+
+df["Highly Negative Skew_yeojohnson"], parameters=stats.yeojohnson(df["Highly Negative Skew"])
+df.skew()
+
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution='normal')
+df["Moderate Negative Skew"] = qt.fit_transform(df[["Moderate Negative Skew"]])
+df
+
+
+
+
+import seaborn as sns
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+sm.qqplot(df["Moderate Negative Skew"],line='45')
+plt.show()
+
+sm.qqplot(np.reciprocal(df["Moderate Negative Skew"]),line='45')
+plt.show()
+
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution='normal',n_quantiles=891)
+
+df["Moderate Negative Skew"] = qt.fit_transform(df[["Moderate Negative Skew"]])
+
+sm.qqplot(df["Moderate Negative Skew"],line='45')
+plt.show()
+
+df["Highly Negative Skew_1"]= qt.fit_transform(df[["Highly Negative Skew"]])
+sm.qqplot(df["Highly Negative Skew"],line='45')
+plt.show()
+
+sm.qqplot(df["Highly Negative Skew_1"],line='45')
+plt.show()
+
+from google.colab import files
+uploaded = files.upload()
+
+# Get the actual filename from the 'uploaded' dictionary
+filename = list(uploaded.keys())[0]
+
+# Read the CSV file using the correct filename
+dt = pd.read_csv(filename)
+
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution='normal', n_quantiles=891)
+
+dt["Age_1"]=qt.fit_transform(dt[["Age"]])
+
+sm.qqplot(dt["Age"],line='45')
+plt.show()
+
+sm.qqplot(dt["Age_1"],line='45')
+plt.show()
+
+
 
        # INCLUDE YOUR CODING AND OUTPUT SCREENSHOTS HERE
 # RESULT:
